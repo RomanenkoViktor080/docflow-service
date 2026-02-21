@@ -9,4 +9,10 @@ public interface BaseFilterBuilderInterface<T, U> {
             U params,
             Function<Specification<T>, Specification<T>> customizer
     );
+
+    default Specification<T> buildSpecification(
+            U params
+    ) {
+        return buildSpecification(params, null);
+    }
 }

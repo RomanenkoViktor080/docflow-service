@@ -1,11 +1,13 @@
 package com.example.docflow_service.dto.document;
 
+import com.example.docflow_service.dto.document_history.DocumentHistoryDto;
 import com.example.docflow_service.entity.document.DocumentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public record DocumentDto(
+public record DocumentViewDto(
         @Schema(
                 description = "Внутренний идентификатор документа",
                 example = "1"
@@ -39,6 +41,8 @@ public record DocumentDto(
                 example = "2026-03-01T10:00:00",
                 format = "date-time"
         )
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+
+        List<DocumentHistoryDto> history
 ) {
 }

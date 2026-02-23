@@ -1,1 +1,5 @@
 databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/documents_V001__initial.sql
+  - include:
+      file: db/changelog/changeset/documents_V002__indices.sql

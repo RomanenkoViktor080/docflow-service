@@ -16,6 +16,10 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+document:
+  batch-size: 50
+  number-format: "DOC-%06d"
+
 server:
   port: 8080
 

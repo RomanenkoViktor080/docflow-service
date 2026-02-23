@@ -1,10 +1,10 @@
 package com.example.docflow_service.controller.document;
 
-import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
 import com.example.docflow_service.dto.document.DocumentCreateDto;
 import com.example.docflow_service.dto.document.DocumentDto;
 import com.example.docflow_service.dto.document.DocumentFilterDto;
+import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
 import com.example.docflow_service.dto.document.DocumentViewDto;
 import com.example.docflow_service.service.document.DocumentBatchService;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -58,16 +57,16 @@ public class DocumentController {
         return documentService.get(dto, pageable);
     }
 
-    @PutMapping("/submit")
+    @PostMapping("/submit")
     public List<DocumentStatusChangeResponseDto> submit(
-            @RequestBody DocumentSubmitRequestDto dto
+            @RequestBody @Valid DocumentSubmitRequestDto dto
     ) {
         return documentBatchService.submit(dto);
     }
 
-    @PutMapping("/approve")
+    @PostMapping("/approve")
     public List<DocumentStatusChangeResponseDto> approve(
-            @RequestBody DocumentApproveRequestDto dto
+            @RequestBody @Valid DocumentApproveRequestDto dto
     ) {
         return documentBatchService.approve(dto);
     }

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 public class DocumentBeforeCreatedAtFilter implements DocumentFilterInterface {
     @Override
     public boolean isApplicable(DocumentFilterDto dto) {
-        return dto.to() != null;
+        return dto.toDate() != null;
     }
 
     @Override
     public Specification<Document> apply(Specification<Document> specification, DocumentFilterDto dto) {
         return specification.and((root, query, cb) ->
-                cb.lessThanOrEqualTo(root.get("createdAt"), dto.to())
+                cb.lessThanOrEqualTo(root.get("createdAt"), dto.toDate())
         );
     }
 }

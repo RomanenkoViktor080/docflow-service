@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DocumentCreateDto(
-        @NotNull(message = "Укажите автора")
+        @NotNull(message = "Не указан автор")
         @Schema(description = "Идентификатор автора документа", example = "1")
         Long authorId,
 

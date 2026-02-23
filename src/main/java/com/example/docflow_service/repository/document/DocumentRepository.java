@@ -1,6 +1,7 @@
 package com.example.docflow_service.repository.document;
 
 import com.example.docflow_service.entity.document.Document;
+import com.example.docflow_service.entity.document.DocumentStatus;
 import com.example.docflow_service.exception.api.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -22,6 +23,19 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
                 () -> new EntityNotFoundException("Не найдено")
         );
     }
+
+    @Query(value = """
+                UPDATE documents
+                SET status = :#{#newStatus?.name()}
+                WHERE id = :id
+                  AND status = :#{#expectedStatus?.name()}
+                RETURNING id
+            """, nativeQuery = true)
+    Long tryChangeStatus(
+            Long id,
+            DocumentStatus expectedStatus,
+            DocumentStatus newStatus
+    );
 
 
 }

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DocumentAfterUpdatedAtFilter implements DocumentFilterInterface {
+public class DocumentAfterCreatedAtFilter implements DocumentFilterInterface {
     @Override
     public boolean isApplicable(DocumentFilterDto dto) {
         return dto.from() != null;
@@ -15,7 +15,7 @@ public class DocumentAfterUpdatedAtFilter implements DocumentFilterInterface {
     @Override
     public Specification<Document> apply(Specification<Document> specification, DocumentFilterDto dto) {
         return specification.and((root, query, cb) ->
-                cb.greaterThanOrEqualTo(root.get("updatedAt"), dto.from())
+                cb.greaterThanOrEqualTo(root.get("createdAt"), dto.from())
         );
     }
 }

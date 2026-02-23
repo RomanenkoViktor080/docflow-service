@@ -17,7 +17,8 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
 document:
-  format: "DOC-%06d"
+  batch-size: 50
+  number-format: "DOC-%06d"
 
 server:
   port: 8080

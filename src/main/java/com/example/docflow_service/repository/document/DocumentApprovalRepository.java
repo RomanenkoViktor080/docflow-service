@@ -12,4 +12,7 @@ public interface DocumentApprovalRepository extends JpaRepository<DocumentApprov
             VALUES (:documentId, :initiatorId)
             """)
     void create(long documentId, long initiatorId);
+
+
+    long countByDocumentId(long documentId);
 }

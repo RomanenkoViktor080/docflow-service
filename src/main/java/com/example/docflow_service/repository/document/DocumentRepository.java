@@ -37,5 +37,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
             DocumentStatus newStatus
     );
 
+    default Document findByIdOrThrow(long id) {
+        return findById(id).orElseThrow(() -> new EntityNotFoundException("Документ не найден"));
+    }
 
 }

@@ -19,6 +19,7 @@ import java.util.concurrent.Executor;
 public class DocumentBatchServiceImpl implements DocumentBatchService {
     private final DocumentService documentService;
     private final Executor executor;
+
     @Value("${document.batch-size:100}")
     private int chunkSize = 100;
 

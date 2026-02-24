@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.HashSet;
+import java.util.List;
 
 public record DocumentApproveRequestDto(
         @Size(
@@ -15,7 +15,7 @@ public record DocumentApproveRequestDto(
                 description = "Список идентификаторов документов для пакетного утверждения (от 1 до 1000)",
                 example = "[1, 2, 3]"
         )
-        HashSet<Long> documentIds,
+        List<Long> documentIds,
 
         @NotNull(message = "Не указан инициатор")
         @Schema(description = "Идентификатор пользователя, выполняющего утверждение")

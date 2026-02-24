@@ -1,16 +1,16 @@
 package com.example.docflow_service.service.document;
 
-import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -18,6 +18,7 @@ import java.util.concurrent.Executor;
 @Service
 public class DocumentBatchServiceImpl implements DocumentBatchService {
     private final DocumentService documentService;
+    @Qualifier("taskExecutor")
     private final Executor executor;
 
     @Value("${document.batch-size:100}")
@@ -34,11 +35,10 @@ public class DocumentBatchServiceImpl implements DocumentBatchService {
     }
 
     private List<DocumentStatusChangeResponseDto> processInBatches(
-            Set<Long> documentIds,
+            List<Long> ids,
             long initiatorId,
             TriFunction<Long, Long, String, DocumentStatusChangeResponseDto> function
     ) {
-        List<Long> ids = new ArrayList<>(documentIds);
         List<DocumentStatusChangeResponseDto> result = new LinkedList<>();
         List<CompletableFuture<List<DocumentStatusChangeResponseDto>>> futures = new ArrayList<>();
         for (int i = 0; i < ids.size(); i += chunkSize) {

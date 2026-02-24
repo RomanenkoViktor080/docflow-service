@@ -20,8 +20,21 @@ document:
   batch-size: 50
   number-format: "DOC-%06d"
 
+workers:
+  submit:
+    enabled: true
+    cron: "10 * * * * *"
+    fetch-batch-size: 200
+  approve:
+    enabled: true
+    cron: "10 * * * * *"
+    fetch-batch-size: 200
+
 server:
   port: 8080
+
+app:
+  self-url: localhost:8080
 
 logging:
   level:

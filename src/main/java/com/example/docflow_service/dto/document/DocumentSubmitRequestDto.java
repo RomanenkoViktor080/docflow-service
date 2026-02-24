@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.HashSet;
+import java.util.List;
 
 public record DocumentSubmitRequestDto(
         @Size(
@@ -14,10 +14,10 @@ public record DocumentSubmitRequestDto(
         @Schema(description = "Список идентификаторов документов для пакетной отправки на согласование (от 1 до 1000)",
                 example = "[1, 2, 3]"
         )
-        HashSet<Long> documentIds,
+        List<Long> documentIds,
 
         @NotNull(message = "Не указан инициатор")
         @Schema(description = "Идентификатор пользователя, выполняющего отправку на согласование")
-        long initiatorId
+        Long initiatorId
 ) {
 }

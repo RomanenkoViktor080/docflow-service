@@ -11,8 +11,8 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class AdminCardFilterBuilder extends BaseFilterBuilder<Document, DocumentFilterDto>
-        implements AdminCardFilterBuilderInterface {
+public class DocumentFilterBuilder extends BaseFilterBuilder<Document, DocumentFilterDto>
+        implements DocumentFilterBuilderInterface {
     private final List<DocumentFilterInterface> filters;
 
     @Override

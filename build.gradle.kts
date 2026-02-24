@@ -40,6 +40,9 @@ dependencies {
 	implementation("org.springframework.shell:spring-shell-starter:3.4.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	implementation(platform("org.testcontainers:testcontainers-bom:1.19.7"))
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:postgresql:1.21.4")
 }
 
 tasks.withType<Test> {

@@ -1,7 +1,7 @@
 package com.example.docflow_service.scheduler;
 
 import com.example.docflow_service.client.DocumentServiceClient;
-import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentApproveDto;
 import com.example.docflow_service.entity.document.DocumentStatus;
 import com.example.docflow_service.repository.document.DocumentRepository;
 import com.example.docflow_service.utils.aop.log.Loggable;
@@ -36,7 +36,7 @@ public class ApproveWorker {
         List<Long> ids = repository.getIdsByStatus(DocumentStatus.SUBMITTED, batchSize);
         if (!ids.isEmpty()) {
             log.info("Найдено и отправлено {} документов", ids.size());
-            client.approveBatch(new DocumentApproveRequestDto(ids, SYSTEM_USER_ID));
+            client.approveBatch(new DocumentApproveDto(ids, SYSTEM_USER_ID, null));
         }
     }
 }

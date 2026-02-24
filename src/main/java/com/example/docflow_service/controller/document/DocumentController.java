@@ -1,14 +1,15 @@
 package com.example.docflow_service.controller.document;
 
-import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentApproveDto;
 import com.example.docflow_service.dto.document.DocumentCreateDto;
 import com.example.docflow_service.dto.document.DocumentDto;
 import com.example.docflow_service.dto.document.DocumentFilterDto;
 import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
-import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
+import com.example.docflow_service.dto.document.DocumentSubmitDto;
 import com.example.docflow_service.dto.document.DocumentViewDto;
 import com.example.docflow_service.service.document.DocumentBatchService;
 import com.example.docflow_service.service.document.DocumentService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/documents")
-@Tag(name = "Document")
+@Tag(name = "Документы", description = "Управление жизненным циклом документов и пакетная обработка")
 public class DocumentController {
     private final DocumentService documentService;
     private final DocumentBatchService documentBatchService;
 
+    @Operation(summary = "Создать новый документ", description = "Создает черновик документа в системе")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public DocumentDto create(
@@ -42,6 +44,7 @@ public class DocumentController {
         return documentService.create(dto);
     }
 
+    @Operation(summary = "Получить документ с историей по ID")
     @GetMapping("/{id}")
     public DocumentViewDto find(
             @PathVariable("id") Long id
@@ -49,6 +52,7 @@ public class DocumentController {
         return documentService.find(id);
     }
 
+    @Operation(summary = "Поиск документов с фильтрацией")
     @GetMapping
     public Page<DocumentDto> get(
             @ParameterObject @Valid DocumentFilterDto dto,
@@ -57,16 +61,24 @@ public class DocumentController {
         return documentService.get(dto, pageable);
     }
 
+    @Operation(
+            summary = "Отправить документы на согласование",
+            description = "Массовая отправка документов. Возвращает статус обработки по каждому ID"
+    )
     @PostMapping("/submit")
     public List<DocumentStatusChangeResponseDto> submit(
-            @RequestBody @Valid DocumentSubmitRequestDto dto
+            @RequestBody @Valid DocumentSubmitDto dto
     ) {
         return documentBatchService.submit(dto);
     }
 
+    @Operation(
+            summary = "Утвердить документы",
+            description = "Массовое утверждение документов"
+    )
     @PostMapping("/approve")
     public List<DocumentStatusChangeResponseDto> approve(
-            @RequestBody @Valid DocumentApproveRequestDto dto
+            @RequestBody @Valid DocumentApproveDto dto
     ) {
         return documentBatchService.approve(dto);
     }

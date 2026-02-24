@@ -1,7 +1,7 @@
 package com.example.docflow_service.scheduler;
 
 import com.example.docflow_service.client.DocumentServiceClient;
-import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
+import com.example.docflow_service.dto.document.DocumentSubmitDto;
 import com.example.docflow_service.entity.document.DocumentStatus;
 import com.example.docflow_service.repository.document.DocumentRepository;
 import com.example.docflow_service.utils.aop.log.Loggable;
@@ -33,7 +33,7 @@ public class SubmitWorker {
     public void schedule() {
         List<Long> ids = repository.getIdsByStatus(DocumentStatus.DRAFT, batchSize);
         if (!ids.isEmpty()) {
-            client.submitBatch(new DocumentSubmitRequestDto(ids, SYSTEM_USER_ID));
+            client.submitBatch(new DocumentSubmitDto(ids, SYSTEM_USER_ID, null));
         }
     }
 }

@@ -8,13 +8,14 @@ import com.example.docflow_service.dto.document.DocumentViewDto;
 import com.example.docflow_service.entity.document.Document;
 import com.example.docflow_service.entity.document.DocumentStatus;
 import com.example.docflow_service.entity.document_history.DocumentAction;
-import com.example.docflow_service.entity.filter.builder.document.AdminCardFilterBuilderInterface;
+import com.example.docflow_service.entity.filter.builder.document.DocumentFilterBuilderInterface;
 import com.example.docflow_service.mapper.DocumentMapper;
 import com.example.docflow_service.repository.document.DocumentRepository;
 import com.example.docflow_service.service.document_approval.DocumentApprovalService;
 import com.example.docflow_service.service.document_history.DocumentHistoryService;
 import com.example.docflow_service.utils.aop.log.Loggable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -32,7 +34,7 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentHistoryService docHistoryService;
     private final DocumentApprovalService docApprovalService;
     private final DocumentMapper mapper;
-    private final AdminCardFilterBuilderInterface filterBuilder;
+    private final DocumentFilterBuilderInterface filterBuilder;
     @Value("${document.number-format:DOC-%06d}")
     private String format;
 
@@ -40,6 +42,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Loggable(startMessage = "Создание документа")
     @Transactional
     public DocumentDto create(DocumentCreateDto dto) {
+        log.info("Входные данные: {}", dto);
         Document document = mapper.toEntity(dto);
         document.setNumber(generateNumber());
         document.setStatus(DocumentStatus.DRAFT);
@@ -79,7 +82,10 @@ public class DocumentServiceImpl implements DocumentService {
             );
 
         }
-        return formErrorResponse(documentId);
+        DocumentStatusChangeResponseDto response = formErrorResponse(documentId);
+        log.warn("Ошибка отправки на согласование, docId: {}, initId: {}, ответ: {}",
+                documentId, initiatorId, response);
+        return response;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -103,8 +109,10 @@ public class DocumentServiceImpl implements DocumentService {
             );
 
         }
-        return formErrorResponse(documentId);
-
+        DocumentStatusChangeResponseDto response = formErrorResponse(documentId);
+        log.warn("Ошибка отправки на утверждение, docId: {}, initId: {}, ответ: {}",
+                documentId, initiatorId, response);
+        return response;
     }
 
     private DocumentStatusChangeResponseDto formErrorResponse(Long documentId) {

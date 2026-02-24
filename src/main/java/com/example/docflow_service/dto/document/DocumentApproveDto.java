@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record DocumentApproveRequestDto(
+public record DocumentApproveDto(
         @Size(
                 message = "Количество документов должно быть от 1 до 1000",
                 min = 1, max = 1000
@@ -18,7 +18,14 @@ public record DocumentApproveRequestDto(
         List<Long> documentIds,
 
         @NotNull(message = "Не указан инициатор")
-        @Schema(description = "Идентификатор пользователя, выполняющего утверждение")
-        Long initiatorId
+        @Schema(description = "Идентификатор пользователя, выполняющего утверждение", example = "1")
+        Long initiatorId,
+
+        @Size(max = 255, message = "Комментарий не может превышать 255 символов")
+        @Schema(
+                description = "Обоснование утверждения или произвольный комментарий",
+                example = "Согласовано согласно регламенту №15"
+        )
+        String comment
 ) {
 }

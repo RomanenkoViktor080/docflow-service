@@ -14,6 +14,7 @@ spring:
         format_sql: true
 
   liquibase:
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
 document:
@@ -25,11 +26,11 @@ document:
 
 workers:
   submit:
-    enabled: true
+    enabled: false
     delay: 1000
     fetch-batch-size: 400
   approve:
-    enabled: true
+    enabled: false
     delay: 1000
     fetch-batch-size: 400
 

@@ -1,10 +1,10 @@
 package com.example.docflow_service.client;
 
-import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentApproveDto;
 import com.example.docflow_service.dto.document.DocumentCreateDto;
 import com.example.docflow_service.dto.document.DocumentDto;
 import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
-import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
+import com.example.docflow_service.dto.document.DocumentSubmitDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +20,8 @@ public interface DocumentServiceClient {
     DocumentDto create(@RequestBody DocumentCreateDto dto);
 
     @PostMapping("/submit")
-    List<DocumentStatusChangeResponseDto> submitBatch(@RequestBody DocumentSubmitRequestDto dto);
+    List<DocumentStatusChangeResponseDto> submitBatch(@RequestBody DocumentSubmitDto dto);
 
     @PostMapping("/approve")
-    List<DocumentStatusChangeResponseDto> approveBatch(@RequestBody DocumentApproveRequestDto dto);
+    List<DocumentStatusChangeResponseDto> approveBatch(@RequestBody DocumentApproveDto dto);
 }

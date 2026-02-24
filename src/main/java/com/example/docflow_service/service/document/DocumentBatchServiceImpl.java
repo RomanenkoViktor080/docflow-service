@@ -1,8 +1,8 @@
 package com.example.docflow_service.service.document;
 
-import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentApproveDto;
 import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
-import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
+import com.example.docflow_service.dto.document.DocumentSubmitDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,20 +30,21 @@ public class DocumentBatchServiceImpl implements DocumentBatchService {
     private int logStepPercent;
 
     @Override
-    public List<DocumentStatusChangeResponseDto> submit(DocumentSubmitRequestDto dto) {
+    public List<DocumentStatusChangeResponseDto> submit(DocumentSubmitDto dto) {
         log.info("Полученно {} документов на batch согласование", dto.documentIds().size());
-        return processInBatches(dto.documentIds(), dto.initiatorId(), documentService::submit);
+        return processInBatches(dto.documentIds(), dto.initiatorId(), dto.comment(), documentService::submit);
     }
 
     @Override
-    public List<DocumentStatusChangeResponseDto> approve(DocumentApproveRequestDto dto) {
+    public List<DocumentStatusChangeResponseDto> approve(DocumentApproveDto dto) {
         log.info("Полученно {} документов на batch утверждение", dto.documentIds().size());
-        return processInBatches(dto.documentIds(), dto.initiatorId(), documentService::approve);
+        return processInBatches(dto.documentIds(), dto.initiatorId(), dto.comment(), documentService::approve);
     }
 
     private List<DocumentStatusChangeResponseDto> processInBatches(
             List<Long> ids,
             long initiatorId,
+            String comment,
             TriFunction<Long, Long, String, DocumentStatusChangeResponseDto> function
     ) {
         int total = ids.size();
@@ -56,7 +57,7 @@ public class DocumentBatchServiceImpl implements DocumentBatchService {
 
             futures.add(
                     CompletableFuture.supplyAsync(
-                            () -> chunk.stream().map(id -> function.apply(id, initiatorId, null)).toList(),
+                            () -> chunk.stream().map(id -> function.apply(id, initiatorId, comment)).toList(),
                             executor
                     ).thenApply(res -> {
                         logStep(processedCount, chunk, total, step);

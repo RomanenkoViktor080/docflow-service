@@ -7,6 +7,8 @@ CREATE INDEX idx_documents_status_created_at ON documents (status, created_at DE
 
 CREATE INDEX idx_documents_author_created_at ON documents (author_id, created_at DESC);
 
+CREATE INDEX idx_documents_created_at ON documents (created_at DESC);
+
 -- document_history
 CREATE INDEX idx_document_history_document_created_at
     ON document_history (document_id, created_at DESC);

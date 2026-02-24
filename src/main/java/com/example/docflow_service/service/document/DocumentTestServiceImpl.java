@@ -4,13 +4,13 @@ import com.example.docflow_service.dto.document.DocumentCreateDto;
 import com.example.docflow_service.dto.document.DocumentDto;
 import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.test.DocumentApproveResponseDto;
+import com.example.docflow_service.dto.document.test.DocumentApproveTestDto;
 import com.example.docflow_service.entity.document.Document;
 import com.example.docflow_service.repository.document.DocumentApprovalRepository;
 import com.example.docflow_service.repository.document.DocumentRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,26 +35,21 @@ public class DocumentTestServiceImpl implements DocumentTestService {
     private final Executor executor;
     private final EntityManager entityManager;
 
-    @Value("${document.test.threads:20}")
-    private int threads;
-    @Value("${document.test.responses:20}")
-    private int attempts;
-
     @Override
-    public DocumentApproveResponseDto approve() {
+    public DocumentApproveResponseDto approve(DocumentApproveTestDto dto) {
         List<DocumentStatusChangeResponseDto> responses = Collections.synchronizedList(new ArrayList<>());
         AtomicInteger errorCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
-        CountDownLatch ready = new CountDownLatch(threads);
+        CountDownLatch ready = new CountDownLatch(dto.threads());
 
         DocumentDto documentDto = documentService.create(new DocumentCreateDto(AUTHOR_ID, TEST_TEXT));
         documentService.submit(documentDto.id(), INITIATOR_ID, TEST_TEXT);
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-        for (int i = 0; i < threads; i++) {
+        for (int i = 0; i < dto.threads(); i++) {
             futures.add(CompletableFuture.runAsync(() -> {
                 ready.countDown();
-                for (int j = 0; j < attempts; j++) {
+                for (int j = 0; j < dto.attempts(); j++) {
                     DocumentStatusChangeResponseDto response = documentService.approve(
                             documentDto.id(),
                             INITIATOR_ID,

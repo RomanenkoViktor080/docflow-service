@@ -1,6 +1,8 @@
 package com.example.docflow_service.client;
 
 import com.example.docflow_service.dto.document.DocumentApproveRequestDto;
+import com.example.docflow_service.dto.document.DocumentCreateDto;
+import com.example.docflow_service.dto.document.DocumentDto;
 import com.example.docflow_service.dto.document.DocumentStatusChangeResponseDto;
 import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,6 +16,8 @@ import java.util.List;
         url = "${app.self-url}",
         path = "/api/v1/documents")
 public interface DocumentServiceClient {
+    @PostMapping
+    DocumentDto create(@RequestBody DocumentCreateDto dto);
 
     @PostMapping("/submit")
     List<DocumentStatusChangeResponseDto> submitBatch(@RequestBody DocumentSubmitRequestDto dto);

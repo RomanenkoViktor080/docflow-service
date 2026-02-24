@@ -20,16 +20,19 @@ document:
   batch-size: 50
   log-step-percent: 5
   number-format: "DOC-%06d"
+  generator:
+    quantity: 1000
 
 workers:
   submit:
     enabled: true
-    cron: "* * * * * *"
-    fetch-batch-size: 200
+    delay: 1000
+    fetch-batch-size: 400
   approve:
     enabled: true
-    cron: "* * * * * *"
-    fetch-batch-size: 200
+    delay: 1000
+    fetch-batch-size: 400
+
 
 server:
   port: 8080

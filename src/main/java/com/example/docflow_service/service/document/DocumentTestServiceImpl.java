@@ -31,7 +31,7 @@ public class DocumentTestServiceImpl implements DocumentTestService {
     private final DocumentService documentService;
     private final DocumentRepository documentRepository;
     private final DocumentApprovalRepository documentApprovalRepository;
-    @Qualifier("taskExecutor")
+    @Qualifier("defaultTaskExecutor")
     private final Executor executor;
     private final EntityManager entityManager;
 

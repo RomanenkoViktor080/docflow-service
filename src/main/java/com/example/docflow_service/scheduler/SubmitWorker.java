@@ -29,7 +29,7 @@ public class SubmitWorker {
     private int batchSize;
 
     @Loggable(startMessage = "Запуск фонового процесса SUBMIT-worker")
-    @Scheduled(cron = "${workers.submit.cron}")
+    @Scheduled(fixedDelayString = "${workers.submit.delay:1000}")
     public void schedule() {
         List<Long> ids = repository.getIdsByStatus(DocumentStatus.DRAFT, batchSize);
         if (!ids.isEmpty()) {

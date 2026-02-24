@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class DocumentBatchServiceImpl implements DocumentBatchService {
     private final DocumentService documentService;
-    @Qualifier("taskExecutor")
+    @Qualifier("defaultTaskExecutor")
     private final Executor executor;
 
     @Value("${document.batch-size:100}")

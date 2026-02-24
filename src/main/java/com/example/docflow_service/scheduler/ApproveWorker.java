@@ -31,7 +31,7 @@ public class ApproveWorker {
     private int batchSize;
 
     @Loggable(startMessage = "Запуск фонового процесса APPROVE-worker")
-    @Scheduled(cron = "${workers.approve.cron}")
+    @Scheduled(fixedDelayString = "${workers.approve.delay:1000}")
     public void schedule() {
         List<Long> ids = repository.getIdsByStatus(DocumentStatus.SUBMITTED, batchSize);
         if (!ids.isEmpty()) {

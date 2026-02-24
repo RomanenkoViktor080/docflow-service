@@ -36,6 +36,8 @@ dependencies {
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.14")
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.3.0")
+	implementation("org.springframework.shell:spring-shell-starter:3.4.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

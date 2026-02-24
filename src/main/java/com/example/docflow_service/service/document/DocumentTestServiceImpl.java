@@ -9,6 +9,7 @@ import com.example.docflow_service.repository.document.DocumentApprovalRepositor
 import com.example.docflow_service.repository.document.DocumentRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class DocumentTestServiceImpl implements DocumentTestService {
     private final DocumentService documentService;
     private final DocumentRepository documentRepository;
     private final DocumentApprovalRepository documentApprovalRepository;
+    @Qualifier("defaultTaskExecutor")
     private final Executor executor;
     private final EntityManager entityManager;
 

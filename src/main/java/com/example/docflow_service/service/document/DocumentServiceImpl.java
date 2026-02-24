@@ -13,6 +13,7 @@ import com.example.docflow_service.mapper.DocumentMapper;
 import com.example.docflow_service.repository.document.DocumentRepository;
 import com.example.docflow_service.service.document_approval.DocumentApprovalService;
 import com.example.docflow_service.service.document_history.DocumentHistoryService;
+import com.example.docflow_service.utils.aop.log.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,7 @@ public class DocumentServiceImpl implements DocumentService {
     private String format;
 
     @Override
+    @Loggable(startMessage = "Создание документа")
     @Transactional
     public DocumentDto create(DocumentCreateDto dto) {
         Document document = mapper.toEntity(dto);

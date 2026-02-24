@@ -4,6 +4,7 @@ import com.example.docflow_service.client.DocumentServiceClient;
 import com.example.docflow_service.dto.document.DocumentSubmitRequestDto;
 import com.example.docflow_service.entity.document.DocumentStatus;
 import com.example.docflow_service.repository.document.DocumentRepository;
+import com.example.docflow_service.utils.aop.log.Loggable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -27,9 +28,10 @@ public class SubmitWorker {
     @Value("${workers.submit.fetch-batch-size}")
     private int batchSize;
 
+    @Loggable(startMessage = "Запуск фонового процесса SUBMIT-worker")
     @Scheduled(cron = "${workers.submit.cron}")
     public void schedule() {
-        List<Long> ids = repository.getIdsByStatus(DocumentStatus.SUBMITTED, batchSize);
+        List<Long> ids = repository.getIdsByStatus(DocumentStatus.DRAFT, batchSize);
         if (!ids.isEmpty()) {
             client.submitBatch(new DocumentSubmitRequestDto(ids, SYSTEM_USER_ID));
         }

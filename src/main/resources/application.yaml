@@ -18,16 +18,17 @@ spring:
 
 document:
   batch-size: 50
+  log-step-percent: 5
   number-format: "DOC-%06d"
 
 workers:
   submit:
     enabled: true
-    cron: "10 * * * * *"
+    cron: "* * * * * *"
     fetch-batch-size: 200
   approve:
     enabled: true
-    cron: "10 * * * * *"
+    cron: "* * * * * *"
     fetch-batch-size: 200
 
 server:

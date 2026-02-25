@@ -19,7 +19,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
 
     default Document findByIdWithHistoryOrThrow(long id) {
         return findByIdWithHistory(id).orElseThrow(
-                () -> new EntityNotFoundException("Не найдено")
+                () -> new EntityNotFoundException("Документ не найден", "Документ не найден, id: " + id)
         );
     }
 
@@ -37,7 +37,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long>, JpaSp
     );
 
     default Document findByIdOrThrow(long id) {
-        return findById(id).orElseThrow(() -> new EntityNotFoundException("Документ не найден"));
+        return findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Документ не найден", "Документ не найден, id: " + id)
+        );
     }
 
     @Query(value = "SELECT id FROM documents WHERE status = :#{#status?.name()} ORDER BY created_at LIMIT :limit",
